@@ -1,0 +1,271 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cool Login & Registration</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.15/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes neonGlow {
+            0% { box-shadow: 0 0 5px #00ff88, 0 0 10px #00ff88, 0 0 15px #00ff88; }
+            50% { box-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88, 0 0 30px #00ff88; }
+            100% { box-shadow: 0 0 5px #00ff88, 0 0 10px #00ff88, 0 0 15px #00ff88; }
+        }
+        .neon-input {
+            transition: all 0.3s ease;
+        }
+        .neon-input:focus {
+            animation: neonGlow 1.5s infinite;
+        }
+        .bg-gradient-animate {
+            background: linear-gradient(45deg, #1a1a3d, #2a2a5e, #3a3a7f, #2a2a5e);
+            background-size: 200% 200%;
+            animation: gradientShift 10s ease infinite;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .btn-neon {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-neon::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+        .btn-neon:hover::after {
+            left: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState } = React;
+
+        // Login Form Component
+        const LoginForm = ({ switchToRegister }) => {
+            const [email, setEmail] = useState('');
+            const [password, setPassword] = useState('');
+            const [error, setError] = useState('');
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                if (!email || !password) {
+                    setError('All fields are required');
+                    return;
+                }
+                if (!/\S+@\S+\.\S+/.test(email)) {
+                    setError('Invalid email format');
+                    return;
+                }
+                setError('');
+                console.log('Login:', { email, password });
+                // Add your login logic here
+            };
+
+            return (
+                <div className="min-h-screen bg-gradient-animate flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-md w-full space-y-8 bg-black/60 backdrop-blur-lg p-10 rounded-2xl border border-[#00ff88]/20">
+                        <div>
+                            <h2 className="text-4xl font-extrabold text-white text-center tracking-wider">NEON LOGIN</h2>
+                            <p className="mt-2 text-center text-sm text-[#00ff88]">
+                                New here?{' '}
+                                <button onClick={switchToRegister} className="font-medium text-white hover:text-[#00ff88] transition-colors">
+                                    Register now
+                                </button>
+                            </p>
+                        </div>
+                        {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+                        <div className="mt-8 space-y-6">
+                            <div className="space-y-6">
+                                <div>
+                                    <input
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="neon-input block w-full px-4 py-3 bg-transparent border border-[#00ff88]/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#00ff88]"
+                                        placeholder="Email"
+                                    />
+                                </div>
+                                <div>
+                                    <input
+                                        type="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        className="neon-input block w-full px-4 py-3 bg-transparent border border-[#00ff88]/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#00ff88]"
+                                        placeholder="Password"
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <button
+                                    onClick={handleSubmit}
+                                    className="btn-neon w-full py-3 px-4 border border-[#00ff88] rounded-lg text-white font-semibold bg-[#00ff88]/10 hover:bg-[#00ff88]/20 transition-colors"
+                                >
+                                    Enter Grid
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Registration Form Component
+        const RegisterForm = ({ switchToLogin }) => {
+            const [email, setEmail] = useState('');
+            const [password, setPassword] = useState('');
+            const [confirmPassword, setConfirmPassword] = useState('');
+            const [error, setError] = useState('');
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                if (!email || !password || !confirmPassword) {
+                    setError('All fields are required');
+                    return;
+                }
+                if (!/\S+@\S+\.\S+/.test(email)) {
+                    setError('Invalid email format');
+                    return;
+                }
+                if (password.length < 8) {
+                    setError('Password must be 8+ characters');
+                    return;
+                }
+                if (password !== confirmPassword) {
+                    setError('Passwords do not match');
+                    return;
+                }
+                setError('');
+                console.log('Register:', { email, password });
+                // Add your registration logic here
+            };
+
+            return (
+                <div className="min-h-screen bg-gradient-animate flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-md w-full space-y-8 bg-black/60 backdrop-blur-lg p-10 rounded-2xl border border-[#ff00ff]/20">
+                        <div>
+                            <h2 className="text-4xl font-extrabold text-white text-center tracking-wider">NEON REGISTER</h2>
+                            <p className="mt-2 text-center text-sm text-[#ff00ff]">
+                                Got an account?{' '}
+                                <button onClick={switchToLogin} className="font-medium text-white hover:text-[#ff00ff] transition-colors">
+                                    Login now
+                                </button>
+                            </p>
+                        </div>
+                        {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+                        <div className="mt-8 space-y-6">
+                            <div className="space-y-6">
+                                <div>
+                                    <input
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="neon-input block w-full px-4 py-3 bg-transparent border border-[#ff00ff]/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#ff00ff]"
+                                        placeholder="Email"
+                                    />
+                                </div>
+                                <div>
+                                    <input
+                                        type="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        className="neon-input block w-full px-4 py-3 bg-transparent border border-[#ff00ff]/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#ff00ff]"
+                                        placeholder="Password"
+                                    />
+                                </div>
+                                <div>
+                                    <input
+                                        type="password"
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        className="neon-input block w-full px-4 py-3 bg-transparent border border-[#ff00ff]/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#ff00ff]"
+                                        placeholder="Confirm Password"
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <button
+                                    onClick={handleSubmit}
+                                    className="btn-neon w-full py-3 px-4 border border-[#ff00ff] rounded-lg text-white font-semibold bg-[#ff00ff]/10 hover:bg-[#ff00ff]/20 transition-colors"
+                                >
+                                    Join Grid
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Main App Component
+        const App = () => {
+            const [isLogin, setIsLogin] = useState(true);
+
+            return (
+                <>
+                    {isLogin ? (
+                        <LoginForm switchToRegister={() => setIsLogin(false)} />
+                    ) : (
+                        <RegisterForm switchToLogin={() => setIsLogin(true)} />
+                    )}
+                </>
+            );
+        };
+
+        // Render the app
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
