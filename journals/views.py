@@ -7,6 +7,8 @@ from .models import UserEntryJournal
 
 # Create your views here.
 
+
+
 class JournalEntryListView(LoginRequiredMixin, ListView):
     model=UserEntryJournal
     template_name='entry_list.html'

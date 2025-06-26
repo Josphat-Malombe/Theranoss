@@ -1,0 +1,90 @@
+/* General Container */
+.legal-container {
+    padding: 40px;
+    max-width: 960px;
+    margin: 60px auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    color: #4a4e69;
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 1.8;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Headings */
+.legal-container h1 {
+    font-size: 2.4rem;
+    text-align: center;
+    margin-bottom: 30px;
+    background: linear-gradient(to right, #a18cd1, #fbc2eb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.legal-container h2 {
+    margin-top: 35px;
+    font-size: 1.3rem;
+    color: #6b7280;
+    position: relative;
+    padding-left: 10px;
+    border-left: 3px solid #c8b6ff;
+}
+
+/* Paragraphs */
+.legal-container p {
+    margin-top: 10px;
+    color: #555;
+    font-size: 1rem;
+}
+
+/* Lists */
+.legal-container ul {
+    margin-left: 20px;
+    margin-top: 10px;
+    padding-left: 20px;
+    color: #555;
+}
+
+.legal-container ul li {
+    margin-bottom: 10px;
+    list-style: disc;
+}
+
+/* Links */
+.legal-container a {
+    color: #8e44ad;
+    text-decoration: underline;
+}
+
+.legal-container a:hover {
+    color: #6a1b9a;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .legal-container {
+        padding: 20px;
+        margin: 30px 15px;
+    }
+
+    .legal-container h1 {
+        font-size: 1.8rem;
+    }
+
+    .legal-container h2 {
+        font-size: 1.1rem;
+    }
+}

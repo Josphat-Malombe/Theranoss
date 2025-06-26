@@ -3,6 +3,7 @@ from . import views
 
 app_name='journals'
 urlpatterns=[
+    
     path('' ,views.JournalEntryListView.as_view(), name="entry_list"),
     path('entry/<int:pk>/' ,views.JournalEntryDetailView.as_view(), name="entry_detail "),
     path('create/' ,views.JournalEntryCreateView.as_view(), name="entry_create"),
