@@ -1,44 +1,101 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="legal-container">
-  <h1>Terms of Service</h1>
-  <p><strong>Effective Date:</strong> January 1, 2025</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Your App</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles to ensure 'Inter' font is used throughout */
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f0f4f8; /* Light background for the page */
+        }
+        /* Offset for anchor links due to fixed header */
+        .anchor-offset::before {
+            content: "";
+            display: block;
+            height: 64px; /* Height of the fixed header */
+            margin-top: -64px; /* Negative margin to pull the section up */
+            visibility: hidden;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Top Navigation Bar -->
+    <header class="fixed top-0 left-0 right-0 bg-white shadow-md z-50 p-4 border-b border-gray-200">
+        <nav class="container mx-auto flex justify-between items-center">
+            <!-- Logo or Site Title -->
+            <a href="#" class="text-2xl font-bold text-indigo-700 hover:text-indigo-800">YourApp</a>
+            <!-- Navigation Links -->
+            <div class="space-x-6">
+                <a href="{% url 'home' %}" class="text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200">Home</a>
+                <a href="{% url 'disclaimer' %}" class="text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200">Disclaimer</a>
+                <a href="{% url 'terms' %}" class="text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200">Terms</a>
+                <a href="{% url 'privacy'%}" class="text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200">Privacy</a>
+            </div>
+        </nav>
+    </header>
 
-  <h2>1. Acceptance of Terms</h2>
-  <p>By accessing or using the Application, you (“the User”) agree to comply with and be bound by these Terms...</p>
+    <!-- Main Content Area with padding for the fixed header -->
+    <main class="pt-20 pb-10">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl bg-white rounded-xl shadow-lg p-8 md:p-10">
 
-  <h2>2. Service Description</h2>
-  <p>Our platform provides general emotional support and mental wellness information through an AI chatbot (“the Service”)...</p>
+               <section id="terms" class="anchor-offset mb-12">
+                <h1 class="text-4xl font-extrabold text-gray-900 mb-6 text-center">Terms of Service</h1>
+                <p class="text-sm text-gray-500 mb-8 text-center"><strong>Effective Date:</strong> January 1, 2025</p>
 
-  <h2>3. No Professional Advice</h2>
-  <p>Responses are informational only and do not replace licensed professionals...</p>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">1. Acceptance of Terms</h2>
+                <p class="text-gray-700 leading-relaxed mb-6">By accessing or using the Application, you (“the User”) agree to comply with and be bound by these Terms. If you do not agree, please do not use the Application.</p>
 
-  <h2>4. Disclaimers and Limitation of Liability</h2>
-  <ul>
-    <li>The Service is provided “as is” and “as available”.</li>
-    <li>We disclaim liability for damages from use.</li>
-    <li>Users agree to indemnify developers and affiliates.</li>
-  </ul>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">2. Service Description</h2>
+                <p class="text-gray-700 leading-relaxed mb-6">Our platform provides general emotional support and mental wellness information through an AI chatbot (“the Service”). It is designed to offer helpful insights and guidance, but it is not a substitute for professional medical or psychological advice.</p>
 
-  <h2>5. User Conduct</h2>
-  <p>Use the app ethically and within Kenyan law. Abuse or misuse may result in action...</p>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">3. No Professional Advice</h2>
+                <p class="text-gray-700 leading-relaxed mb-6">Responses from the AI chatbot are for informational purposes only and do not constitute professional medical, psychological, or legal advice. Always consult with a licensed professional for any health, mental health, or legal concerns.</p>
 
-  <h2>6. Data Storage and Privacy</h2>
-  <p>Data is processed temporarily and anonymized. For more details, see our <a href="{% url 'privacy_policy' %}">Privacy Policy</a>.</p>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">4. Disclaimers and Limitation of Liability</h2>
+                <ul class="list-disc list-inside text-gray-700 leading-relaxed mb-6 pl-4 space-y-2">
+                    <li>The Service is provided “as is” and “as available”.</li>
+                    <li>We disclaim all liability for damages arising from the use or inability to use the Service.</li>
+                    <li>Users agree to indemnify and hold harmless the developers and their affiliates from any claims arising out of their use of the Service.</li>
+                </ul>
 
-  <h2>7. Termination</h2>
-  <p>We reserve the right to suspend or terminate service at any time...</p>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">5. User Conduct</h2>
+                <p class="text-gray-700 leading-relaxed mb-6">Users must use the application ethically and in compliance with all applicable Kenyan laws. Any abuse or misuse of the Service may result in immediate suspension or termination of access.</p>
 
-  <h2>8. Modifications</h2>
-  <p>Terms may change. Continued use means acceptance.</p>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">6. Data Storage and Privacy</h2>
+                <p class="text-gray-700 leading-relaxed mb-6">Data exchanged through the Service is processed temporarily and anonymized where possible. For comprehensive details on how your data is collected, used, and protected, please refer to our <a href="#privacy" class="text-indigo-600 hover:underline font-medium">Privacy Policy</a>.</p>
 
-  <h2>9. Governing Law</h2>
-  <p>Terms follow the laws of Kenya.</p>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">7. Termination</h2>
+                <p class="text-gray-700 leading-relaxed mb-6">We reserve the right to suspend or terminate your access to the Service at any time, for any reason, without prior notice, especially in cases of breach of these Terms.</p>
 
-  <h2>10. Severability</h2>
-  <p>If any clause is invalid, the rest remain valid.</p>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">8. Modifications</h2>
+                <p class="text-gray-700 leading-relaxed mb-6">These Terms of Service may be updated or modified from time to time. Your continued use of the Service after any such changes constitutes your acceptance of the new Terms.</p>
 
-  <h2>11. Contact</h2>
-  <p>Email: support@yourapp.co.ke | Phone: +254 700 000 000</p>
-</div>
-{% endblock %}
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">9. Governing Law</h2>
+                <p class="text-gray-700 leading-relaxed mb-6">These Terms shall be governed by and construed in accordance with the laws of Kenya, without regard to its conflict of law provisions.</p>
+
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">10. Severability</h2>
+                <p class="text-gray-700 leading-relaxed mb-6">If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions shall remain in full force and effect.</p>
+
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">11. Contact</h2>
+                <p class="text-gray-700 leading-relaxed">For any questions or concerns regarding these Terms, please contact us:</p>
+                <p class="text-gray-700 leading-relaxed mb-6">Email: <a href="mailto:support@yourapp.co.ke" class="text-indigo-600 hover:underline font-medium">support@yourapp.co.ke</a> | Phone: <a href="tel:+254700000000" class="text-indigo-600 hover:underline font-medium">+254 700 000 000</a></p>
+            </section>
+           
+        </div>
+    </main>
+
+    <!-- Simple Footer -->
+    <footer class="bg-gray-800 text-white text-center p-6 mt-10">
+        <p>&copy; 2025. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+

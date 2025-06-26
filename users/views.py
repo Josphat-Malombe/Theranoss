@@ -10,6 +10,14 @@ def home(request):
     return render(request, 'home.html')
 
 
+def privacy(request):
+    return render(request, "privacy/privacy.html")
+def disclaimer(request):
+    return render(request, "privacy/disclaimer.html")
+def terms(request):
+    return render(request, "privacy/terms.html")
+
+
 def register(request):
 
     """
