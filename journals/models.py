@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
 
+from tinymce.models import HTMLField
+
 # Create your models here.
 
 MOOD_CHOICES = [
@@ -15,9 +17,9 @@ MOOD_CHOICES = [
 
 class UserEntryJournal(models.Model):
 
-    user=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name="journal_entries")
+    user=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name="journal_entries", null=True)
     title=models.CharField(max_length=200)
-    content=models.TextField(help_text="Write about your day, how are you feeling or anything in your mind ")
+    content=HTMLField()
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     mood=models.CharField(max_length=20, choices=MOOD_CHOICES,blank=True,null=True, help_text="How are you feeling? ")

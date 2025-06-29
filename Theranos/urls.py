@@ -22,7 +22,8 @@ from users import views as aviews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',aviews.home,name='home'),
+    path('tinymce/', include('tinymce.urls')),
+    path('',include('main.urls')),
     path('users/' ,include('users.urls')),
     path('journals/', include('journals.urls')),
 ]

@@ -39,9 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'crispy_bootstrap5', 
+    'tinymce',
     'users',
     'chat',
     'journals',
+    'main',
+    
 ]
 
 MIDDLEWARE = [
@@ -146,3 +149,25 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+TINYMCE_DEFAULT_CONFIG= {
+    'height':500,
+    'width':'100%',
+    'menubar':False,
+    'statusbar':False,
+    'plugins': 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste code help wordcount',
+    'toolbar': 'undo redo | formatselect | '
+               'bold italic forecolor backcolor | alignleft aligncenter '
+               'alignright alignjustify | bullist numlist outdent indent | '
+               'link image | code | removeformat | help',
+
+    'custom_undo_redo_levels': 10,
+    'branding':False,
+
+
+}
+
+MEDIA_URL='/media/'
+MEDIA_ROOT=BASE_DIR/ 'media'
+

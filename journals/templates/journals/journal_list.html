@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" class="dark:dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Journal - Theranoss</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for Inter font and smooth scrolling */
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #020f1c; /* Light blue-gray background */
+            scroll-behavior: smooth;
+        }
+        .dark body {
+            background-color: #1f2937; /* Gray-800 for dark mode */
+        }
+
+        /* Subtle animation for elements fading in */
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.98) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        .animate-fade-in-scale {
+            animation: fadeInScale 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <header class="bg-gradient-to-r from-indigo-600 to-blue-500 text-white p-6 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-extrabold tracking-tight">
+                <i class="fas fa-book mr-2"></i> My Journal
+            </h1>
+            <nav>
+                <a href="{% url 'home' %}" class="bg-white text-indigo-700 font-semibold py-2 px-5 rounded-full hover:bg-indigo-50 transition-colors duration-300 shadow-md mr-4">Home</a>
+                <a href="{% url 'entry_create' %}" class="bg-white text-indigo-700 font-semibold py-2 px-5 rounded-full hover:bg-indigo-50 transition-colors duration-300 shadow-md">
+                    <i class="fas fa-plus mr-2"></i> New Entry
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8 sm:py-12">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-10 text-center animate-fade-in-scale">
+                All Your Reflections
+            </h2>
+
+            {% if entry %}
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {% for item in entry %}
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 ease-in-out p-6 border border-gray-200 dark:border-gray-700 animate-fade-in-scale">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 truncate">{{ item.title }}</h3>
+                                <span class="text-sm text-gray-500 dark:text-gray-400">{{ item.created_at|date:"M d, Y" }}</span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3">
+                                {{ item.content|truncatechars:150 }}
+                            </p>
+                            <div class="flex justify-end space-x-3">
+                                <a href="{% url 'entry_detail' item.pk %}" class="text-indigo-500 hover:text-indigo-600 font-medium text-sm transition-colors duration-200">
+                                    <i class="fas fa-eye mr-1"></i> View
+                                </a>
+                                <a href="{% url 'entry_update' item.pk %}" class="text-green-500 hover:text-green-600 font-medium text-sm transition-colors duration-200">
+                                    <i class="fas fa-edit mr-1"></i> Edit
+                                </a>
+                            
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {% if is_paginated %}
+                    <nav class="flex justify-center mt-12 space-x-2" aria-label="Pagination">
+                        {% if page_obj.has_previous %}
+                            <a href="?page={{ page_obj.previous_page_number }}" class="px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200">Previous</a>
+                        {% endif %}
+                        {% for i in page_obj.paginator.page_range %}
+                            <a href="?page={{ i }}" class="px-4 py-2 rounded-lg {% if page_obj.number == i %}bg-indigo-500 text-white{% else %}text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600{% endif %} transition-colors duration-200">{{ i }}</a
+
+>
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}" class="px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200">Next</a>
+                        {% endif %}
+                    </nav>
+                {% endif %}
+            {% else %}
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 text-center text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 animate-fade-in-scale">
+                    <p class="text-xl font-medium mb-4">It looks a little quiet in here...</p>
+                    <p class="mb-6">Start your journey of self-reflection by creating your first journal entry.</p>
+                    <a href="{% url 'entry_create' %}" class="inline-flex items-center bg-indigo-500 text-white font-semibold py-3 px-8 rounded-full hover:bg-indigo-600 transition-colors duration-300 shadow-md transform hover:scale-105">
+                        <i class="fas fa-pen mr-2"></i> Write Your First Entry
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 dark:bg-gray-900 text-white dark:text-gray-300 text-center p-6 mt-10">
+        <p>© 2025 Theranoss. All rights reserved.</p>
+    </footer>
+
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-8 max-w-sm w-full transform scale-95 opacity-0 transition-all duration-300 ease-out" id="modalContent">
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4 text-center">Confirm Deletion</h3>
+            <p class="text-gray-700 dark:text-gray-300 mb-6 text-center">Are you sure you want to delete this journal entry? This action cannot be undone.</p>
+            <div class="flex justify-center space-x-4">
+                <button onclick="hideDeleteModal()" class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold py-2 px-6 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-300">Cancel</button>
+                <button id="confirmDeleteButton" class="bg-red-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-red-600 transition-colors duration-300">Delete Anyway</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let deleteUrl = null;
+
+        function showDeleteModal(url) {
+            deleteUrl = url;
+            const modal = document.getElementById('deleteModal');
+            const modalContent = document.getElementById('modalContent');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function hideDeleteModal() {
+            const modal = document.getElementById('deleteModal');
+            const modalContent = document.getElementById('modalContent');
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                deleteUrl = null;
+            }, 300);
+        }
+
+        document.getElementById('confirmDeleteButton').addEventListener('click', function() {
+            if (deleteUrl) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = deleteUrl;
+                const csrfTokenInput = document.createElement('input');
+                csrfTokenInput.type = 'hidden';
+                csrfTokenInput.name = 'csrfmiddlewaretoken';
+                csrfTokenInput.value = '{{ csrf_token }}';
+                form.appendChild(csrfTokenInput);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    </script>
+</body>
+</html>

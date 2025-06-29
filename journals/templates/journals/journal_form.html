@@ -1,0 +1,49 @@
+
+{# your_journal_app_name/templates/your_journal_app_name/journal_form.html #}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journals-Create</title>
+    {# Include any global CSS for your site here #}
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        h1 { text-align: center; color: #333; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"] { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        button { background-color: #007bff; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #0056b3; }
+        /* Add more styles to integrate TinyMCE output with your site's aesthetic */
+        /* For example, for the content displayed from TinyMCE */
+        .journal-content img { max-width: 100%; height: auto; display: block; margin: 10px 0; }
+        .journal-content blockquote { border-left: 4px solid #ccc; padding-left: 10px; margin: 15px 0; color: #666; font-style: italic; }
+        .journal-content h1, .journal-content h2, .journal-content h3 { margin-top: 1.5em; margin-bottom: 0.5em; }
+    </style>
+
+    {# CRUCIAL: Include TinyMCE's JavaScript and CSS #}
+    {{ form.media }}
+
+</head>
+<body>
+    <h1>Dear Diary....</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="{{ form.title.id_for_label }}">Title:</label>
+            {{ form.title }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.content.id_for_label }}">Content:</label>
+            {{ form.content }}
+        </div>
+
+        <button type="submit">Save Entry</button>
+    </form>
+</body>
+</html>
